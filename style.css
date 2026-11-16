@@ -70,7 +70,7 @@ legend { padding: 0; margin-bottom: 9px; }
 .error { color: #8d382b; font-size: 13px; margin: 9px 0 0; }
 .preview h2 { margin-bottom: 18px; }
 .preview-stage { min-height: 270px; display: grid; place-items: center; padding: 12px; background: #eaf0e6 radial-gradient(#b9c8b5 1px, transparent 1px) 0 0 / 17px 17px; border: 1px solid #e0e9dc; border-radius: 15px; }
-.qr-paper { width: min(100%, 244px); padding: 6px; background: white; border-radius: 10px; box-shadow: 0 6px 15px #304c3520; }
+.qr-paper { width: min(100%, 244px); padding: 10px; background: white; border-radius: 10px; box-shadow: 0 6px 15px #304c3520; }
 .qr-paper.transparent {
   background: #fff conic-gradient(#e4e8e1 25%, transparent 0 50%, #e4e8e1 0 75%, transparent 0) 0 0 / 16px 16px;
 }
@@ -84,7 +84,7 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .download-note { margin: 10px 0 0; }
 footer { display: grid; gap: 6px; padding: 30px 0; }
 footer p { margin: 0; }
-footer a { color: var(--green); text-underline-offset: 2px; }
+footer a { color: var(--green); text-decoration: none; }
 @media (max-width: 790px) {
   .shell { width: min(580px, calc(100% - 34px)); }
   .studio { grid-template-columns: 1fr; }
