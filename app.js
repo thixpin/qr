@@ -51,6 +51,9 @@ const logoFile = get('logo-file');
 const logoError = get('logo-error');
 const uploadMark = get('upload-mark');
 const removeLogo = get('remove-logo');
+const logoControls = get('logo-controls');
+const logoSize = get('logo-size');
+const logoSizeValue = get('logo-size-value');
 const qrPaper = get('qr-paper');
 const shape = get('qr-shape');
 const foreground = get('qr-color');
@@ -103,7 +106,8 @@ function drawCode(text) {
   const matrix = QRCode.create(text, { errorCorrectionLevel: logo ? 'H' : 'M' }).modules;
   const size = 1024;
   const scale = Math.floor(size / (matrix.size + 8));
-  const offset = Math.floor((size - matrix.size * scale) / 2);
+  const symbolSize = matrix.size * scale;
+  const offset = Math.floor((size - symbolSize) / 2);
   exportCanvas.width = exportCanvas.height = size;
   const ctx = exportCanvas.getContext('2d');
   const backgroundColor = transparent.checked ? null : background.value;
@@ -132,9 +136,10 @@ function drawCode(text) {
     }
   }
   if (logo) {
-    const plate = Math.floor(matrix.size * .17) * scale;
+    const logoSide = symbolSize * logoSize.valueAsNumber / 100;
+    const plate = logoSide + symbolSize * .02;
     const start = (size - plate) / 2;
-    const fit = (plate - scale) / Math.max(logo.naturalWidth, logo.naturalHeight);
+    const fit = logoSide / Math.max(logo.naturalWidth, logo.naturalHeight);
     const width = logo.naturalWidth * fit;
     const height = logo.naturalHeight * fit;
     if (backgroundColor) {
@@ -146,7 +151,6 @@ function drawCode(text) {
     ctx.drawImage(logo, (size - width) / 2, (size - height) / 2, width, height);
   }
 
-  const symbolSize = matrix.size * scale;
   previewCanvas.width = previewCanvas.height = symbolSize;
   previewCanvas.getContext('2d').drawImage(
     exportCanvas, offset, offset, symbolSize, symbolSize,
@@ -217,7 +221,7 @@ logoFile.addEventListener('change', async () => {
     uploadMark.replaceChildren(image);
     get('upload-title').textContent = file.name;
     get('upload-hint').textContent = 'Choose a different logo';
-    removeLogo.hidden = false;
+    logoControls.hidden = false;
     updatePreview();
   } catch {
     if (generation === uploadGeneration) showLogoError('This image could not be opened. Try another file.');
@@ -226,13 +230,20 @@ logoFile.addEventListener('change', async () => {
   }
 });
 
+logoSize.addEventListener('input', () => {
+  const percentage = logoSize.value + '%';
+  logoSizeValue.value = percentage;
+  logoSize.setAttribute('aria-valuetext', percentage);
+  updatePreview();
+});
+
 removeLogo.addEventListener('click', () => {
   uploadGeneration++;
   logo = null;
   uploadMark.innerHTML = icon('upload');
   get('upload-title').textContent = 'Upload a logo';
   get('upload-hint').textContent = 'PNG, JPG, WebP or GIF · Up to 5 MB';
-  removeLogo.hidden = true;
+  logoControls.hidden = true;
   showLogoError('');
   get('upload-button').focus();
   updatePreview();
