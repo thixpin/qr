@@ -87,7 +87,11 @@ const appearance = get('appearance');
 const foreground = get('qr-color');
 const background = get('qr-background');
 const transparent = get('qr-transparent');
-let type = 'url';
+const preferencesKey = 'little-qr-studio:preferences';
+const styleNames = ['qr-shape', 'eye-style', 'eye-inner-style'];
+const savedPreferences = readPreferences();
+const savedType = savedPreferences.type;
+let type = typeof savedType === 'string' && Object.hasOwn(types, savedType) ? savedType : 'url';
 let logo = null;
 let transparentBackground = false;
 let uploadGeneration = 0;
@@ -100,6 +104,44 @@ get('choices').innerHTML = Object.entries(types).map(([key, config]) =>
 uploadMark.innerHTML = icon('upload');
 download.innerHTML = icon('download') + 'Download PNG';
 downloadSvg.innerHTML = icon('download') + 'Download SVG';
+
+function readPreferences() {
+  try {
+    return JSON.parse(localStorage.getItem(preferencesKey)) ?? {};
+  } catch {
+    return {};
+  }
+}
+
+function savePreferences() {
+  const styles = Object.fromEntries(styleNames.map(name => [
+    name, appearance.querySelector(`[name="${name}"]:checked`).value,
+  ]));
+  try {
+    localStorage.setItem(preferencesKey, JSON.stringify({
+      type, styles, foreground: foreground.value, background: background.value,
+      transparent: transparentBackground, logoSize: logoSize.valueAsNumber,
+    }));
+  } catch {
+    // The current controls still work if the browser blocks storage.
+  }
+}
+
+function applyAppearance(settings = {}) {
+  for (const name of styleNames) {
+    const choices = Array.from(appearance.querySelectorAll(`[name="${name}"]`));
+    const selected = choices.find(choice => choice.value === settings.styles?.[name]);
+    (selected ?? choices.find(choice => choice.defaultChecked)).checked = true;
+  }
+  const isColor = value => typeof value === 'string' && /^#[a-f0-9]{6}$/i.test(value);
+  foreground.value = isColor(settings.foreground) ? settings.foreground : foreground.defaultValue;
+  background.value = isColor(settings.background) ? settings.background : background.defaultValue;
+  setBackgroundTransparency(settings.transparent === true);
+  const size = settings.logoSize;
+  const validSize = Number.isInteger(size) && size >= Number(logoSize.min) && size <= Number(logoSize.max);
+  logoSize.value = validSize ? String(size) : logoSize.defaultValue;
+  syncLogoSizeLabel();
+}
 
 function renderFields() {
   const values = valuesByType[type];
@@ -235,6 +277,8 @@ function drawCode(text) {
 }
 
 function updatePreview() {
+  foreground.parentElement.style.setProperty('--swatch-color', foreground.value);
+  background.parentElement.style.setProperty('--swatch-color', background.value);
   const payload = createPayload(type, valuesByType[type]);
   let message = payload.message;
   if (payload.text) {
@@ -252,6 +296,7 @@ function updatePreview() {
 
 get('choices').addEventListener('change', (event) => {
   type = event.target.value;
+  savePreferences();
   renderFields();
   updatePreview();
 });
@@ -272,11 +317,19 @@ function setBackgroundTransparency(value) {
 
 transparent.addEventListener('click', () => {
   setBackgroundTransparency(!transparentBackground);
+  savePreferences();
   updatePreview();
 });
 
 appearance.addEventListener('input', ({ target }) => {
   if (target === background) setBackgroundTransparency(false);
+  savePreferences();
+  updatePreview();
+});
+
+get('reset-appearance').addEventListener('click', () => {
+  applyAppearance();
+  savePreferences();
   updatePreview();
 });
 
@@ -316,10 +369,15 @@ logoFile.addEventListener('change', async () => {
   }
 });
 
-logoSize.addEventListener('input', () => {
+function syncLogoSizeLabel() {
   const percentage = logoSize.value + '%';
   logoSizeValue.value = percentage;
   logoSize.setAttribute('aria-valuetext', percentage);
+}
+
+logoSize.addEventListener('input', () => {
+  syncLogoSizeLabel();
+  savePreferences();
   updatePreview();
 });
 
@@ -373,5 +431,6 @@ downloadSvg.addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(href), 1000);
 });
 
+applyAppearance(savedPreferences);
 renderFields();
 updatePreview();

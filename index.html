@@ -54,30 +54,30 @@
                 <legend>QR style</legend>
                 <div class="style-choices">
                   <label class="choice">
-                    <input type="radio" name="qr-shape" value="square" checked>
-                    <span><i class="style-sample modules square" aria-hidden="true"></i>Square</span>
+                    <input type="radio" name="qr-shape" value="square" aria-label="Square" checked>
+                    <span><i class="style-sample modules square" aria-hidden="true"></i></span>
                   </label>
                   <label class="choice">
-                    <input type="radio" name="qr-shape" value="rounded">
-                    <span><i class="style-sample modules rounded" aria-hidden="true"></i>Rounded</span>
+                    <input type="radio" name="qr-shape" value="rounded" aria-label="Rounded">
+                    <span><i class="style-sample modules rounded" aria-hidden="true"></i></span>
                   </label>
                   <label class="choice">
-                    <input type="radio" name="qr-shape" value="dots">
-                    <span><i class="style-sample modules dots" aria-hidden="true"></i>Dots</span>
+                    <input type="radio" name="qr-shape" value="dots" aria-label="Dots">
+                    <span><i class="style-sample modules dots" aria-hidden="true"></i></span>
                   </label>
                 </div>
               </fieldset>
               <div class="field">
                 <label for="qr-color">QR color</label>
-                <input id="qr-color" type="color" value="#20352a">
+                <span class="color-control foreground-control"><input id="qr-color" type="color" value="#20352a"></span>
               </div>
               <div class="field">
                 <label for="qr-background">Background color</label>
                 <div class="background-picker">
-                  <input id="qr-background" type="color" value="#ffffff">
-                  <button id="qr-transparent" type="button" aria-pressed="false">
+                  <span class="color-control"><input id="qr-background" type="color" value="#ffffff"></span>
+                  <button id="qr-transparent" type="button" aria-label="Transparent background" aria-pressed="false">
                     <span class="transparent-swatch" aria-hidden="true"></span>
-                    Transparent
+                    None
                   </button>
                 </div>
               </div>
@@ -87,16 +87,16 @@
                 <legend>Corner eye outer shape</legend>
                 <div class="style-choices">
                   <label class="choice">
-                    <input type="radio" name="eye-style" value="square" checked>
-                    <span><i class="style-sample eye square" aria-hidden="true"></i>Square</span>
+                    <input type="radio" name="eye-style" value="square" aria-label="Square" checked>
+                    <span><i class="style-sample eye square" aria-hidden="true"></i></span>
                   </label>
                   <label class="choice">
-                    <input type="radio" name="eye-style" value="rounded">
-                    <span><i class="style-sample eye rounded" aria-hidden="true"></i>Rounded</span>
+                    <input type="radio" name="eye-style" value="rounded" aria-label="Rounded">
+                    <span><i class="style-sample eye rounded" aria-hidden="true"></i></span>
                   </label>
                   <label class="choice">
-                    <input type="radio" name="eye-style" value="dot">
-                    <span><i class="style-sample eye dot" aria-hidden="true"></i>Dot</span>
+                    <input type="radio" name="eye-style" value="dot" aria-label="Dot">
+                    <span><i class="style-sample eye dot" aria-hidden="true"></i></span>
                   </label>
                 </div>
               </fieldset>
@@ -104,21 +104,22 @@
                 <legend>Inner dot</legend>
                 <div class="style-choices">
                   <label class="choice">
-                    <input type="radio" name="eye-inner-style" value="square" checked>
-                    <span><i class="style-sample eye eye-inner square" aria-hidden="true"></i>Square</span>
+                    <input type="radio" name="eye-inner-style" value="square" aria-label="Square" checked>
+                    <span><i class="style-sample eye eye-inner square" aria-hidden="true"></i></span>
                   </label>
                   <label class="choice">
-                    <input type="radio" name="eye-inner-style" value="rounded">
-                    <span><i class="style-sample eye eye-inner rounded" aria-hidden="true"></i>Rounded</span>
+                    <input type="radio" name="eye-inner-style" value="rounded" aria-label="Rounded">
+                    <span><i class="style-sample eye eye-inner rounded" aria-hidden="true"></i></span>
                   </label>
                   <label class="choice">
-                    <input type="radio" name="eye-inner-style" value="dot">
-                    <span><i class="style-sample eye eye-inner dot" aria-hidden="true"></i>Dot</span>
+                    <input type="radio" name="eye-inner-style" value="dot" aria-label="Dot">
+                    <span><i class="style-sample eye eye-inner dot" aria-hidden="true"></i></span>
                   </label>
                 </div>
               </fieldset>
             </div>
           </div>
+          <button type="button" class="reset-appearance" id="reset-appearance">Reset appearance</button>
         </fieldset>
         <div class="logo-settings">
           <div class="field-heading">Center logo <span>Optional</span></div>
