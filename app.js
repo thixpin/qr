@@ -21,8 +21,8 @@ const types = {
     { name: 'last', label: 'Last name', half: true },
     { name: 'phone', label: 'Phone', type: 'tel', half: true },
     { name: 'email', label: 'Email', type: 'email', half: true },
-    { name: 'organization', label: 'Organization', half: true },
-    { name: 'position', label: 'Position', placeholder: 'e.g. Designer', half: true },
+    { name: 'organization', label: 'Company/Organization', half: true },
+    { name: 'position', label: 'Job Title', placeholder: 'e.g. Designer', half: true },
   ] },
   wifi: { label: 'Wi-Fi', fields: [
     { name: 'ssid', label: 'Network name (SSID)', placeholder: 'My Wi-Fi' },
