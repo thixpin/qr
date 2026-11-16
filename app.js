@@ -44,7 +44,8 @@ const valuesByType = {
 
 const get = (id) => document.getElementById(id);
 const fields = get('fields');
-const canvas = get('qr');
+const previewCanvas = get('qr');
+const exportCanvas = document.createElement('canvas');
 const download = get('download');
 const logoFile = get('logo-file');
 const logoError = get('logo-error');
@@ -103,8 +104,8 @@ function drawCode(text) {
   const size = 1024;
   const scale = Math.floor(size / (matrix.size + 8));
   const offset = Math.floor((size - matrix.size * scale) / 2);
-  canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d');
+  exportCanvas.width = exportCanvas.height = size;
+  const ctx = exportCanvas.getContext('2d');
   const backgroundColor = transparent.checked ? null : background.value;
   if (backgroundColor) {
     ctx.fillStyle = backgroundColor;
@@ -144,6 +145,14 @@ function drawCode(text) {
     }
     ctx.drawImage(logo, (size - width) / 2, (size - height) / 2, width, height);
   }
+
+  const symbolSize = matrix.size * scale;
+  previewCanvas.width = previewCanvas.height = symbolSize;
+  previewCanvas.getContext('2d').drawImage(
+    exportCanvas, offset, offset, symbolSize, symbolSize,
+    0, 0, symbolSize, symbolSize,
+  );
+  qrPaper.style.backgroundColor = backgroundColor || '';
 }
 
 function updatePreview() {
@@ -232,7 +241,7 @@ removeLogo.addEventListener('click', () => {
 download.addEventListener('click', () => {
   const link = document.createElement('a');
   link.download = 'qr-' + type + '.png';
-  link.href = canvas.toDataURL('image/png');
+  link.href = exportCanvas.toDataURL('image/png');
   link.click();
 });
 
