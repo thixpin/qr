@@ -1,0 +1,90 @@
+:root {
+  font-family: "DM Sans Variable", system-ui, sans-serif;
+  color: #2d382e;
+  background: #f8f5ee;
+  font-synthesis: none;
+  --border: #e6e2d7;
+  --muted: #626b5f;
+  --green: #365742;
+  --paper: #fffcf6;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-width: 280px; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid #66866a; outline-offset: 3px; }
+svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.shell { width: min(1080px, calc(100% - 64px)); margin-inline: auto; }
+.site-header { border-bottom: 1px solid var(--border); background: #fbf8f2; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; min-height: 74px; gap: 16px; }
+.brand { display: inline-flex; align-items: center; gap: 11px; color: inherit; text-decoration: none; font-size: 18px; font-weight: 750; letter-spacing: -.02em; }
+.brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: var(--green); color: #fffaf1; }
+.brand-mark svg { width: 21px; height: 21px; }
+.header-note { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
+.header-note svg { width: 15px; height: 15px; }
+.intro { padding: 68px 0 39px; }
+h1 { font: 400 clamp(47px, 7vw, 84px)/1 "Instrument Serif", Georgia, serif; letter-spacing: -.035em; margin: 0; }
+h1 em { color: #56745b; padding-right: .13em; font-weight: 400; }
+.intro p { color: var(--muted); margin: 17px 0 0; font-size: 16px; line-height: 1.55; }
+.studio { display: grid; grid-template-columns: minmax(0, 1.24fr) minmax(0, 1fr); align-items: start; gap: 22px; }
+.card { background: var(--paper); border: 1px solid var(--border); border-radius: 23px; padding: 27px; box-shadow: 0 8px 22px #403a2210; }
+h2 { margin: 0 0 24px; font: 400 30px/1.05 "Instrument Serif", Georgia, serif; letter-spacing: -.02em; }
+.type-picker { padding: 0; margin: 0 0 23px; border: 0; min-width: 0; }
+legend, .field-heading, .field label { font-weight: 700; font-size: 13px; }
+legend { padding: 0; margin-bottom: 9px; }
+.choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.choice { position: relative; }
+.choice input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.choice span { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 46px; padding: 6px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; font-weight: 650; cursor: pointer; white-space: nowrap; }
+.choice svg { width: 17px; height: 17px; }
+.choice input:checked + span { color: #2e503b; border-color: #9caf95; background: #e9f0e4; }
+.choice input:focus-visible + span { outline: 3px solid #66866a; outline-offset: 2px; }
+.choice span:hover { border-color: #9caf95; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.field { display: grid; gap: 8px; grid-column: 1 / -1; }
+.field.half { grid-column: auto; }
+.field input:not([type="checkbox"]), .field select, .field textarea {
+  width: 100%; min-height: 45px; color: inherit; padding: 10px 12px;
+  background: #fffefa; border: 1px solid #dddcd0; border-radius: 9px;
+}
+.field textarea { resize: vertical; min-height: 80px; }
+.field input::placeholder, .field textarea::placeholder { color: #747b70; }
+.field.checkbox label { display: flex; align-items: center; gap: 7px; width: fit-content; }
+.field input[type="checkbox"] { accent-color: var(--green); }
+.logo-settings { margin-top: 23px; border-top: 1px solid var(--border); padding-top: 19px; }
+.field-heading { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+.field-heading span { color: var(--muted); font-size: 11px; font-weight: 600; background: #f0eee6; padding: 3px 7px; border-radius: 5px; }
+.logo-upload { width: 100%; display: flex; gap: 12px; align-items: center; text-align: left; padding: 12px; color: inherit; background: #faf8f1; border: 1px dashed #c9cebd; border-radius: 11px; }
+.logo-upload:hover { background: #eff2e9; border-color: #92a68c; }
+.upload-mark { width: 38px; height: 38px; flex: none; border-radius: 9px; background: #e9eee2; display: grid; place-items: center; color: var(--green); }
+.upload-mark img { max-width: 30px; max-height: 30px; }
+.upload-copy { min-width: 0; display: grid; gap: 3px; }
+.upload-copy strong { font-size: 13px; overflow-wrap: anywhere; }
+.upload-copy small { font-size: 12px; color: var(--muted); }
+.remove-logo { margin-top: 9px; background: transparent; border: 0; padding: 4px 0; text-decoration: underline; color: var(--green); font-size: 13px; }
+.error { color: #8d382b; font-size: 13px; margin: 9px 0 0; }
+.preview h2 { margin-bottom: 18px; }
+.preview-stage { min-height: 280px; display: grid; place-items: center; padding: 24px; background: #eaf0e6 radial-gradient(#b9c8b5 1px, transparent 1px) 0 0 / 17px 17px; border: 1px solid #e0e9dc; border-radius: 15px; }
+.qr-paper { width: min(100%, 230px); padding: 5px; background: white; border-radius: 15px; box-shadow: 0 6px 15px #304c3520; }
+canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; border-radius: 10px; }
+#preview-message { max-width: 240px; margin: 0; text-align: center; padding: 12px; border-radius: 8px; background: #f7f9f3; font-size: 14px; line-height: 1.5; }
+#preview-message:empty { display: none; }
+.download { margin-top: 17px; min-height: 47px; display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; color: #fffdf7; background: var(--green); border: 0; border-radius: 10px; font-weight: 700; font-size: 14px; }
+.download:hover:not(:disabled) { background: #294634; }
+.download:disabled { opacity: .52; cursor: default; }
+.download-note, footer { text-align: center; font-size: 12px; color: var(--muted); }
+.download-note { margin: 10px 0 0; }
+footer { padding: 30px 0; }
+@media (max-width: 790px) {
+  .shell { width: min(580px, calc(100% - 34px)); }
+  .studio { grid-template-columns: 1fr; }
+  .intro { padding-top: 48px; }
+}
+@media (max-width: 390px) {
+  .card { padding: 17px; }
+  .choice span { gap: 4px; flex-direction: column; }
+  .header-note { font-size: 11px; }
+  .brand { font-size: 16px; }
+  .field.half { grid-column: 1 / -1; }
+}
