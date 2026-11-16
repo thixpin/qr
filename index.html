@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f8f5ee">
   <title>Free QR Code Generator | Little QR Studio</title>
-  <meta name="description" content="Create free QR codes for URLs, contacts, Wi-Fi and email. Add a logo, customize colors and download a high-resolution PNG. No sign-up required.">
+  <meta name="description" content="Create free QR codes for links, contacts, Wi-Fi, email, text, phone numbers, locations and events. Add a logo, customize colors and download a high-resolution PNG or SVG. No sign-up required.">
   <link rel="canonical" href="https://qr.thixpin.me/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Little QR Studio">
   <meta property="og:title" content="Free QR Code Generator | Little QR Studio">
-  <meta property="og:description" content="Create free QR codes for URLs, contacts, Wi-Fi and email. Add a logo, customize colors and download a high-resolution PNG. No sign-up required.">
+  <meta property="og:description" content="Create free QR codes for links, contacts, Wi-Fi, email, text, phone numbers, locations and events. Add a logo, customize colors and download a high-resolution PNG or SVG. No sign-up required.">
   <meta property="og:url" content="https://qr.thixpin.me/">
   <meta property="og:image" content="https://qr.thixpin.me/og-image.png">
   <meta property="og:image:type" content="image/png">
@@ -34,7 +34,7 @@
   <main class="shell">
     <section class="intro">
       <h1>Free <em>QR code generator</em></h1>
-      <p>Create a QR code for a link, contact, Wi-Fi network, or email. Add your logo and download a PNG for free. No sign-up required.</p>
+      <p>Create a QR code for a link, contact, Wi-Fi network, or email. Add your logo and download a PNG or SVG for free. No sign-up required.</p>
     </section>
     <div class="studio">
       <section class="card editor" aria-labelledby="editor-heading">
@@ -49,24 +49,74 @@
         <fieldset class="appearance" id="appearance">
           <legend>Appearance</legend>
           <div class="fields">
-            <div class="field">
-              <label for="qr-shape">QR style</label>
-              <select id="qr-shape">
-                <option value="square">Square</option>
-                <option value="rounded">Rounded</option>
-                <option value="dots">Dots</option>
-              </select>
+            <div class="field half appearance-column">
+              <fieldset class="field style-picker">
+                <legend>QR style</legend>
+                <div class="style-choices">
+                  <label class="choice">
+                    <input type="radio" name="qr-shape" value="square" checked>
+                    <span><i class="style-sample modules square" aria-hidden="true"></i>Square</span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="qr-shape" value="rounded">
+                    <span><i class="style-sample modules rounded" aria-hidden="true"></i>Rounded</span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="qr-shape" value="dots">
+                    <span><i class="style-sample modules dots" aria-hidden="true"></i>Dots</span>
+                  </label>
+                </div>
+              </fieldset>
+              <div class="field">
+                <label for="qr-color">QR color</label>
+                <input id="qr-color" type="color" value="#20352a">
+              </div>
+              <div class="field">
+                <label for="qr-background">Background color</label>
+                <div class="background-picker">
+                  <input id="qr-background" type="color" value="#ffffff">
+                  <button id="qr-transparent" type="button" aria-pressed="false">
+                    <span class="transparent-swatch" aria-hidden="true"></span>
+                    Transparent
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="field half">
-              <label for="qr-color">QR color</label>
-              <input id="qr-color" type="color" value="#20352a">
-            </div>
-            <div class="field half">
-              <label for="qr-background">Background color</label>
-              <input id="qr-background" type="color" value="#ffffff">
-            </div>
-            <div class="field checkbox">
-              <label for="qr-transparent"><input id="qr-transparent" type="checkbox"> Transparent background</label>
+            <div class="field half appearance-column">
+              <fieldset class="field style-picker">
+                <legend>Corner eye outer shape</legend>
+                <div class="style-choices">
+                  <label class="choice">
+                    <input type="radio" name="eye-style" value="square" checked>
+                    <span><i class="style-sample eye square" aria-hidden="true"></i>Square</span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="eye-style" value="rounded">
+                    <span><i class="style-sample eye rounded" aria-hidden="true"></i>Rounded</span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="eye-style" value="dot">
+                    <span><i class="style-sample eye dot" aria-hidden="true"></i>Dot</span>
+                  </label>
+                </div>
+              </fieldset>
+              <fieldset class="field style-picker">
+                <legend>Inner dot</legend>
+                <div class="style-choices">
+                  <label class="choice">
+                    <input type="radio" name="eye-inner-style" value="square" checked>
+                    <span><i class="style-sample eye eye-inner square" aria-hidden="true"></i>Square</span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="eye-inner-style" value="rounded">
+                    <span><i class="style-sample eye eye-inner rounded" aria-hidden="true"></i>Rounded</span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="eye-inner-style" value="dot">
+                    <span><i class="style-sample eye eye-inner dot" aria-hidden="true"></i>Dot</span>
+                  </label>
+                </div>
+              </fieldset>
             </div>
           </div>
         </fieldset>
@@ -97,8 +147,11 @@
             <div class="qr-paper" id="qr-paper" hidden><canvas id="qr" role="img" aria-label="Generated QR code"></canvas></div>
             <p id="preview-message" role="status"></p>
           </div>
-          <button type="button" class="download" id="download" disabled></button>
-          <p class="download-note">PNG image · 1024 × 1024 px</p>
+          <div class="download-actions">
+            <button type="button" class="download" id="download" disabled></button>
+            <button type="button" class="download download-secondary" id="download-svg" disabled></button>
+          </div>
+          <p class="download-note">PNG · 1024 × 1024 px · Scalable SVG</p>
         </section>
         <aside class="ad-slot" aria-labelledby="scan-tip-heading">
           <h2 id="scan-tip-heading">Before you share</h2>
