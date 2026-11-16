@@ -26,11 +26,12 @@ export function createPayload(type, values) {
     const phone = values.phone.trim();
     const email = values.email.trim();
     const organization = values.organization.trim();
-    if (!first && !last && !phone && !email && !organization) {
+    const position = values.position?.trim();
+    if (!first && !last && !phone && !email && !organization && !position) {
       return { message: 'Add a name or contact detail to see its QR code.' };
     }
     if (email && !validEmail(email)) return { message: 'Enter a valid contact email address.' };
-    const name = [first, last].filter(Boolean).join(' ') || organization || email || phone;
+    const name = [first, last].filter(Boolean).join(' ') || organization || email || phone || position;
     const lines = [
       'BEGIN:VCARD',
       'VERSION:3.0',
@@ -40,6 +41,7 @@ export function createPayload(type, values) {
     if (phone) lines.push('TEL;TYPE=CELL:' + escapeContact(phone));
     if (email) lines.push('EMAIL:' + escapeContact(email));
     if (organization) lines.push('ORG:' + escapeContact(organization));
+    if (position) lines.push('TITLE:' + escapeContact(position));
     lines.push('END:VCARD');
     return { text: lines.join('\r\n') };
   }
@@ -56,8 +58,5 @@ export function createPayload(type, values) {
   if (!recipient) return { message: 'Enter a recipient to see the email QR code.' };
   if (!validEmail(recipient)) return { message: 'Enter a valid recipient email address.' };
   const address = encodeURIComponent(recipient).replace('%40', '@');
-  const params = [];
-  if (values.subject) params.push('subject=' + encodeURIComponent(values.subject));
-  if (values.body) params.push('body=' + encodeURIComponent(values.body.replace(/\r?\n/g, '\r\n')));
-  return { text: 'mailto:' + address + (params.length ? '?' + params.join('&') : '') };
+  return { text: 'mailto:' + address };
 }

@@ -30,6 +30,30 @@
         <form id="qr-form">
           <div class="fields" id="fields"></div>
         </form>
+        <fieldset class="appearance" id="appearance">
+          <legend>Appearance</legend>
+          <div class="fields">
+            <div class="field">
+              <label for="qr-shape">QR style</label>
+              <select id="qr-shape">
+                <option value="square">Square</option>
+                <option value="rounded">Rounded</option>
+                <option value="dots">Dots</option>
+              </select>
+            </div>
+            <div class="field half">
+              <label for="qr-color">QR color</label>
+              <input id="qr-color" type="color" value="#20352a">
+            </div>
+            <div class="field half">
+              <label for="qr-background">Background color</label>
+              <input id="qr-background" type="color" value="#ffffff">
+            </div>
+            <div class="field checkbox">
+              <label for="qr-transparent"><input id="qr-transparent" type="checkbox"> Transparent background</label>
+            </div>
+          </div>
+        </fieldset>
         <div class="logo-settings">
           <div class="field-heading">Center logo <span>Optional</span></div>
           <button type="button" class="logo-upload" id="upload-button">

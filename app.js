@@ -21,7 +21,8 @@ const types = {
     { name: 'last', label: 'Last name', half: true },
     { name: 'phone', label: 'Phone', type: 'tel', half: true },
     { name: 'email', label: 'Email', type: 'email', half: true },
-    { name: 'organization', label: 'Organization' },
+    { name: 'organization', label: 'Organization', half: true },
+    { name: 'position', label: 'Position', placeholder: 'e.g. Designer', half: true },
   ] },
   wifi: { label: 'Wi-Fi', fields: [
     { name: 'ssid', label: 'Network name (SSID)', placeholder: 'My Wi-Fi' },
@@ -31,16 +32,14 @@ const types = {
   ] },
   email: { label: 'Email', fields: [
     { name: 'email', label: 'Recipient email', type: 'email', placeholder: 'hello@example.com' },
-    { name: 'subject', label: 'Subject' },
-    { name: 'body', label: 'Message', multiline: true },
   ] },
 };
 
 const valuesByType = {
   url: { url: 'https://example.com' },
-  contact: { first: '', last: '', phone: '', email: '', organization: '' },
+  contact: { first: '', last: '', phone: '', email: '', organization: '', position: '' },
   wifi: { ssid: '', password: '', security: 'WPA', hidden: false },
-  email: { email: '', subject: '', body: '' },
+  email: { email: '' },
 };
 
 const get = (id) => document.getElementById(id);
@@ -51,6 +50,11 @@ const logoFile = get('logo-file');
 const logoError = get('logo-error');
 const uploadMark = get('upload-mark');
 const removeLogo = get('remove-logo');
+const qrPaper = get('qr-paper');
+const shape = get('qr-shape');
+const foreground = get('qr-color');
+const background = get('qr-background');
+const transparent = get('qr-transparent');
 let type = 'url';
 let logo = null;
 let uploadGeneration = 0;
@@ -72,7 +76,7 @@ function renderFields() {
     const label = document.createElement('label');
     label.htmlFor = 'field-' + field.name;
     label.textContent = field.label;
-    const control = document.createElement(field.options ? 'select' : field.multiline ? 'textarea' : 'input');
+    const control = document.createElement(field.options ? 'select' : 'input');
     control.id = label.htmlFor;
     control.name = field.name;
     if (field.options) {
@@ -101,12 +105,29 @@ function drawCode(text) {
   const offset = Math.floor((size - matrix.size * scale) / 2);
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, size, size);
-  ctx.fillStyle = '#20352a';
+  const backgroundColor = transparent.checked ? null : background.value;
+  if (backgroundColor) {
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, size, size);
+  }
+  const moduleShape = shape.value;
+  ctx.fillStyle = foreground.value;
   for (let row = 0; row < matrix.size; row++) {
     for (let column = 0; column < matrix.size; column++) {
-      if (matrix.get(row, column)) ctx.fillRect(offset + column * scale, offset + row * scale, scale, scale);
+      if (!matrix.get(row, column)) continue;
+      const x = offset + column * scale;
+      const y = offset + row * scale;
+      if (moduleShape === 'square' || matrix.isReserved(row, column)) {
+        ctx.fillRect(x, y, scale, scale);
+        continue;
+      }
+      ctx.beginPath();
+      if (moduleShape === 'rounded') {
+        ctx.roundRect(x, y, scale, scale, scale * .28);
+      } else {
+        ctx.arc(x + scale / 2, y + scale / 2, scale * .48, 0, Math.PI * 2);
+      }
+      ctx.fill();
     }
   }
   if (logo) {
@@ -115,8 +136,12 @@ function drawCode(text) {
     const fit = (plate - scale) / Math.max(logo.naturalWidth, logo.naturalHeight);
     const width = logo.naturalWidth * fit;
     const height = logo.naturalHeight * fit;
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(start, start, plate, plate);
+    if (backgroundColor) {
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(start, start, plate, plate);
+    } else {
+      ctx.clearRect(start, start, plate, plate);
+    }
     ctx.drawImage(logo, (size - width) / 2, (size - height) / 2, width, height);
   }
 }
@@ -131,7 +156,7 @@ function updatePreview() {
       message = 'This content is too long for one QR code. Try shortening it or removing the logo.';
     }
   }
-  get('qr-paper').hidden = Boolean(message);
+  qrPaper.hidden = Boolean(message);
   get('preview-message').textContent = message || '';
   download.disabled = Boolean(message);
 }
@@ -150,6 +175,11 @@ fields.addEventListener('input', ({ target }) => {
   updatePreview();
 });
 get('qr-form').addEventListener('submit', (event) => event.preventDefault());
+get('appearance').addEventListener('input', () => {
+  background.disabled = transparent.checked;
+  qrPaper.classList.toggle('transparent', transparent.checked);
+  updatePreview();
+});
 
 function showLogoError(message) {
   logoError.textContent = message;
